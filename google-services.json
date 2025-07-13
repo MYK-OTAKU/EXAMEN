@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "498120047672",
+    "project_id": "examenmatar",
+    "storage_bucket": "examenmatar.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498120047672:android:803156b83d7a7e71cbbacd",
+        "android_client_info": {
+          "package_name": "com.example.examen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0BRLkoulod8T-2LTSALiIOKibCvgsWBw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

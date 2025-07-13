@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "765387442991",
+    "project_id": "tp-matar",
+    "storage_bucket": "tp-matar.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765387442991:android:afbe68acb8e65b7148afda",
+        "android_client_info": {
+          "package_name": "com.example.examen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-oOS0QNUMhyLTW4w20DlJUMcOB7GLZM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765387442991:android:f228de3dcda2364448afda",
+        "android_client_info": {
+          "package_name": "com.example.tp_matar_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-oOS0QNUMhyLTW4w20DlJUMcOB7GLZM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

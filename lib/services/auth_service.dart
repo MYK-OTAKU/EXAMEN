@@ -21,27 +21,13 @@ class AuthService {
       );
       
       // Ajouter des informations supplémentaires au profil
-      if (result.user != null) {
-        await result.user!.updateDisplayName('Technicien');
-        print('Compte Technicien créé avec succès: ${result.user!.uid}');
-      }
+      await result.user?.updateDisplayName('Technicien');
       
+      print('Compte Technicien créé avec succès: ${result.user?.uid}');
       return result;
-    } on FirebaseAuthException catch (e) {
-      print('Erreur Firebase Auth lors de la création: ${e.code} - ${e.message}');
-      switch (e.code) {
-        case 'email-already-in-use':
-          throw Exception('Cette adresse email est déjà utilisée.');
-        case 'weak-password':
-          throw Exception('Le mot de passe est trop faible.');
-        case 'invalid-email':
-          throw Exception('L\'adresse email n\'est pas valide.');
-        default:
-          throw Exception('Erreur lors de la création du compte: ${e.message}');
-      }
     } catch (e) {
-      print('Erreur générale lors de la création du compte: $e');
-      throw Exception('Erreur inattendue lors de la création du compte. Veuillez réessayer.');
+      print('Erreur lors de la création du compte: $e');
+      throw e;
     }
   }
 
@@ -49,31 +35,40 @@ class AuthService {
   Future<UserCredential?> signIn(String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
-        email: email,
+        email: email.trim(),
         password: password,
       );
       
       print('Connexion réussie - UID: ${result.user?.uid}');
       return result;
     } on FirebaseAuthException catch (e) {
-      print('Erreur Firebase Auth lors de la connexion: ${e.code} - ${e.message}');
-      switch (e.code) {
-        case 'user-not-found':
-          throw Exception('Aucun utilisateur trouvé avec cette adresse email.');
-        case 'wrong-password':
-          throw Exception('Mot de passe incorrect.');
-        case 'invalid-email':
-          throw Exception('L\'adresse email n\'est pas valide.');
-        case 'user-disabled':
-          throw Exception('Ce compte utilisateur a été désactivé.');
-        case 'too-many-requests':
-          throw Exception('Trop de tentatives de connexion. Veuillez réessayer plus tard.');
-        default:
-          throw Exception('Erreur lors de la connexion: ${e.message}');
-      }
+      print('Erreur Firebase Auth: ${e.code} - ${e.message}');
+      throw FirebaseAuthException(
+        code: e.code,
+        message: _getErrorMessage(e.code),
+      );
     } catch (e) {
-      print('Erreur générale lors de la connexion: $e');
-      throw Exception('Erreur inattendue lors de la connexion. Veuillez réessayer.');
+      print('Erreur lors de la connexion: $e');
+      throw Exception('Erreur de connexion: $e');
+    }
+  }
+
+  String _getErrorMessage(String code) {
+    switch (code) {
+      case 'user-not-found':
+        return 'Aucun utilisateur trouvé avec cet email';
+      case 'wrong-password':
+        return 'Mot de passe incorrect';
+      case 'invalid-email':
+        return 'Email invalide';
+      case 'user-disabled':
+        return 'Compte utilisateur désactivé';
+      case 'too-many-requests':
+        return 'Trop de tentatives. Réessayez plus tard';
+      case 'invalid-credential':
+        return 'Identifiants incorrects. Vérifiez votre email et mot de passe';
+      default:
+        return 'Erreur d\'authentification: $code';
     }
   }
 

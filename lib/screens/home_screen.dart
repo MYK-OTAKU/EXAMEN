@@ -28,23 +28,31 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadEngins() async {
+    if (!mounted) return;
+    
     setState(() {
       _isLoading = true;
     });
 
     try {
       List<Engin> engins = await _storageService.getEnginsWithOfflineSupport();
-      setState(() {
-        _engins = engins;
-      });
+      if (mounted) {
+        setState(() {
+          _engins = engins;
+        });
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erreur lors du chargement: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors du chargement: $e')),
+        );
+      }
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

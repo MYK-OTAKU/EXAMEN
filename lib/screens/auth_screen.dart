@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
 import 'home_screen.dart';
 
@@ -37,10 +38,10 @@ class _AuthScreenState extends State<AuthScreen> {
     try {
       if (_isLogin) {
         // Se connecter
-        await _authService.signIn(_emailController.text, _passwordController.text);
+        await _authService.signIn(_emailController.text.trim(), _passwordController.text);
       } else {
         // Créer un compte Technicien
-        await _authService.createTechnicienAccount(_emailController.text, _passwordController.text);
+        await _authService.createTechnicienAccount(_emailController.text.trim(), _passwordController.text);
       }
 
       // Navigation vers l'écran principal
@@ -49,14 +50,20 @@ class _AuthScreenState extends State<AuthScreen> {
           MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       }
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        _errorMessage = e.message ?? 'Erreur d\'authentification';
+      });
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = e.toString().replaceAll('Exception: ', '');
       });
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
